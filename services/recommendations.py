@@ -12,13 +12,13 @@ def get_user_recommendations(db: Session, user_id: int):
     - fallback to popular books
     """
 
-    # 1️⃣ Books the user interacted with
+    # Books the user interacted with
     user_purchases = db.query(Purchase.book_id).filter(Purchase.user_id == user_id)
     user_borrows = db.query(Borrow.book_id).filter(Borrow.user_id == user_id)
 
     user_book_ids = {b.book_id for b in user_purchases.union(user_borrows)}
 
-    # 2️⃣ Favorite authors
+    # Favorite authors
     favorite_authors = (
         db.query(Book.author)
         .filter(Book.id.in_(user_book_ids))
@@ -28,7 +28,7 @@ def get_user_recommendations(db: Session, user_id: int):
 
     favorite_authors = [a[0] for a in favorite_authors if a[0]]
 
-    # 3️⃣ Recommend books by similar authors
+    #Recommend books by similar authors
     recs = (
         db.query(Book)
         .filter(Book.author.in_(favorite_authors))
@@ -39,7 +39,7 @@ def get_user_recommendations(db: Session, user_id: int):
     if recs:
         return recs
 
-    # 4️⃣ Fallback → top selling books
+    # Fallback → top selling books
     top_sales = (
         db.query(Book)
         .join(Purchase)
@@ -52,7 +52,7 @@ def get_user_recommendations(db: Session, user_id: int):
     if top_sales:
         return top_sales
 
-    # 5️⃣ Final fallback → most borrowed books
+    # Final fallback → most borrowed books
     top_borrows = (
         db.query(Book)
         .join(Borrow)

@@ -6,7 +6,7 @@ from datetime import datetime
 def seed_data():
     db: Session = SessionLocal()
 
-    print("🔄 Seeding database...")
+    print(" Seeding database...")
 
     # Clear old data (optional, remove if not needed)
     db.query(Purchase).delete()
