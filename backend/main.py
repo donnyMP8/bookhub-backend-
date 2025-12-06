@@ -5,6 +5,7 @@ from api.users import router as users_router
 from api.books import router as books_router
 from api.purchases import router as purchases_router
 from api.borrows import router as borrows_router
+from api.recommendations import router as recommendations_router
 
 from db.database import Base, engine
 
@@ -29,16 +30,17 @@ app.add_middleware(
 )
 
 # Include Routers
-app.include_router(users_router, prefix="/api", tags=["Users"])
-app.include_router(books_router, prefix="/api", tags=["Books"])
-app.include_router(purchases_router, prefix="/api", tags=["Purchases"])
-app.include_router(borrows_router, prefix="/api", tags=["Borrows"])
+app.include_router(users_router, prefix="/api")
+app.include_router(books_router, prefix="/api")
+app.include_router(purchases_router, prefix="/api")
+app.include_router(borrows_router, prefix="/api")
+app.include_router(recommendations_router, prefix="/api")
 
 # Root route
 @app.get("/")
 def root():
     return {
-        "message": "Library API is running ",
+        "message": "Library API is running ✅",
         "docs": "/docs",
         "redoc": "/redoc"
     }

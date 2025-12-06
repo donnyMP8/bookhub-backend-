@@ -6,13 +6,13 @@ from sqlalchemy import pool
 from alembic import context
 import sys
 import os
+from backend.db.database import engine
 
 # Add backend folder to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Import SQLAlchemy Base used in our models
-from db.database import Base
-
+from backend.db.database import Base
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

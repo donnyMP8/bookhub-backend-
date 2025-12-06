@@ -1,18 +1,19 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional  # Added
 
 class BookBase(BaseModel):
     title: str
-    author: str | None = None
+    author: Optional[str] = None  # Changed from str | None
     price: float
     stock: int
 
 class BookCreate(BookBase):
     pass
 
-class BookOut(BookBase):
+class BookRead(BookBase):
     id: int
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -1,21 +1,21 @@
 from rich import print
-from sqlalchemy.orm import Session
-from backend.db.database import SessionLocal
-from backend.db.models import User
-from .helpers import menu_title, choose, pause
+from db.database import SessionLocal
+from db.models import User
+from cli.helpers import menu_title, choose, pause
 
 def list_users():
-    db: Session = SessionLocal()
+    db = SessionLocal()
     menu_title("All Users")
 
     users = db.query(User).all()
     for u in users:
         print(f"[green]{u.id}[/green] - {u.name} ({u.email})")
 
+    db.close()
     pause()
 
 def create_user():
-    db: Session = SessionLocal()
+    db = SessionLocal()
     menu_title("Create User")
 
     name = input("Name: ")
@@ -25,28 +25,35 @@ def create_user():
     db.add(user)
     db.commit()
 
-    print("[bold green]User created![/bold green]")
+    print("[bold green]✅ User created![/bold green]")
+    db.close()
     pause()
 
 def delete_user():
-    db: Session = SessionLocal()
+    db = SessionLocal()
     menu_title("Delete User")
 
     user_id = int(input("User ID: "))
-    user = db.query(User).filter_by(id=user_id).first()
+    user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
-        print("[red]User not found[/red]")
+        print("[red]❌ User not found[/red]")
     else:
         db.delete(user)
         db.commit()
-        print("[green]Deleted successfully.[/green]")
+        print("[green]✅ Deleted successfully.[/green]")
 
+    db.close()
     pause()
 
 def users_menu():
     while True:
-        menu_title("Users Menu")
+        menu_title("👥 Users Menu")
+        print("1. List Users")
+        print("2. Create User")
+        print("3. Delete User")
+        print("0. Back")
+        
         choice = choose(
             "Select an option",
             ["1","2","3","0"]

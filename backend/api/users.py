@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import List  # Add this
 from db.database import get_db
 from db.models import User
 from schemas.users import UserCreate, UserRead
@@ -20,14 +21,14 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.get("/", response_model=list[UserRead])
+@router.get("/", response_model=List[UserRead])  # Changed from list[UserRead]
 def list_users(db: Session = Depends(get_db)):
     return db.query(User).all()
 
 
 @router.get("/{user_id}", response_model=UserRead)
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(User).get(user_id)
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(404, "User not found")
     return user

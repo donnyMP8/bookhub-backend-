@@ -1,16 +1,16 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class PurchaseBase(BaseModel):
+class PurchaseBase(BaseModel):  # Fixed from BorrowBase
     user_id: int
     book_id: int
 
 class PurchaseCreate(PurchaseBase):
     pass
 
-class PurchaseOut(PurchaseBase):
+class PurchaseRead(PurchaseBase):  # Changed from BorrowOut
     id: int
     date: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Changed from orm_mode

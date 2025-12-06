@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 BASE_DIR = Path(__file__).resolve().parent
-project_root = BASE_DIR.parent.parent
+project_root = BASE_DIR.parent   # ✅ FIXED (was parent.parent)
 env_path = project_root / ".env"
 
 if env_path.exists():

@@ -1,8 +1,14 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
+from typing import Optional  # Added
 from db.models import Book
 
-def search_books(db: Session, query: str = None, min_price: float = None, max_price: float = None):
+def search_books(
+    db: Session, 
+    query: Optional[str] = None,  # Changed from = None (implicit)
+    min_price: Optional[float] = None,  # Changed
+    max_price: Optional[float] = None  # Changed
+):
     q = db.query(Book)
 
     if query:
